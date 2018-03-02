@@ -10,18 +10,18 @@
             <#list 0..i as number>
                 <#if random.nextBoolean()>
                     <#if r<rome?size>
-                        <div class="question rome">${rome[r]}</div>
+                        <h1 class="question rome">${rome[r]}</h1>
                         <#assign r++>
                     <#elseif w<word?size>
-                        <div class="question word">${word[w]}</div>
+                        <h1 class="question word">${word[w]}</h1>
                         <#assign w++>
                     </#if>
                 <#else>
                     <#if w<word?size>
-                        <div class="question word">${word[w]}</div>
+                        <h1 class="question word">${word[w]}</h1>
                         <#assign w++>
                     <#elseif r<rome?size>
-                        <div class="question rome">${rome[r]}</div>
+                        <h1 class="question rome">${rome[r]}</h1>
                         <#assign r++>
                     </#if>
                 </#if>

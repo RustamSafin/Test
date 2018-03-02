@@ -8,19 +8,19 @@ $(document).ready(function () {
     $(".question").css('color',color);
     setTimeout(function() {
             $(".numbers").hide()
-    }, 3000);
+    }, 5000);
 
 
 
     if (sessionStorage.getItem('countRome')!=null) {
-        sessionStorage.setItem('countRome', document.getElementsByClassName("rome").length+sessionStorage.getItem('countRome'));
+        sessionStorage.setItem('countRome', document.getElementsByClassName("rome").length+parseInt(sessionStorage.getItem('countRome')));
     } else {
-        sessionStorage.setItem('countRome', document.getElementsByClassName("rome").length);
+        sessionStorage.setItem('countRome', parseInt(document.getElementsByClassName("rome").length));
     }
     if (sessionStorage.getItem('countWord') !=null) {
-        sessionStorage.setItem('countWord', document.getElementsByClassName("word").length+sessionStorage.getItem('countWord'));
+        sessionStorage.setItem('countWord', document.getElementsByClassName("word").length+parseInt(sessionStorage.getItem('countWord')));
     } else {
-        sessionStorage.setItem('countWord', document.getElementsByClassName("word").length);
+        sessionStorage.setItem('countWord', parseInt(document.getElementsByClassName("word").length));
 
     }
 
@@ -28,12 +28,12 @@ $(document).ready(function () {
         //нет проверки на то, что если выбрал все правильные варианты
         if (!$(this).hasClass("used")) {
             if (sessionStorage.getItem('correctRome')!=null) {
-                var correctRome = sessionStorage.getItem('correctRome');
+                var correctRome = parseInt(sessionStorage.getItem('correctRome'));
             } else {
                 var correctRome =0;
             }
             if (sessionStorage.getItem('correctWord') !=null) {
-                var correctWord = sessionStorage.getItem('correctWord');
+                var correctWord = parseInt(sessionStorage.getItem('correctWord'));
             } else {
                 var correctWord=0;
             }
@@ -46,9 +46,11 @@ $(document).ready(function () {
                 if (numbers[i].textContent === answer.textContent) {
                     $(answer).css('color', 'green').addClass("used");
                     if (answer.id ==="rome") {
-                        sessionStorage.setItem('correctRome', correctRome++);
+                        correctRome+=1;
+                        sessionStorage.setItem('correctRome',correctRome);
                     } else {
-                        sessionStorage.setItem('correctWord', correctWord++);
+                        correctWord+=1;
+                        sessionStorage.setItem('correctWord',correctWord );
                     }
                     k++;
                 }
@@ -65,20 +67,22 @@ $(document).ready(function () {
         $('#next').text("Закончить");
     }
 
-    alert(sessionStorage.getItem('round'));
 
     $("#next").click(function () {
-        var round =sessionStorage.getItem('round');
-
-        //не уверен в if
-        if (round===null) {
-            round=1;
-            sessionStorage.setItem('round',round);
+        var round = sessionStorage.getItem("rr");
+        if (round === null){
+            sessionStorage.setItem("rr", 1);
+        }else {
+            round = parseInt(sessionStorage.getItem("rr"));
+            round+=1;
+            sessionStorage.setItem("rr", round);
         }
-        if (round!==2) {
-            sessionStorage.setItem('round',round++);
+        round = parseInt(sessionStorage.getItem("rr"));
+        alert(round);
+        if (round <= 3) {
             window.location.replace("/start");
-        } else {
+        }
+        if (round === 5){
             $.ajax({
                 url: '/finish',
                 method: 'post',
@@ -91,7 +95,14 @@ $(document).ready(function () {
                 success: function (data) {
                     $(".results").text(data).show();
                 }
-            })
+            });
+            alert(
+                "Rome count: "+sessionStorage.getItem('countRome')+"\n"+
+                "Rome correct: "+sessionStorage.getItem('correctRome')+"\n"+
+                "Word count: "+sessionStorage.getItem('countWord')+"\n"+
+                "Word correct: "+sessionStorage.getItem("correctWord")+"\n"
+            );
+            window.location.replace("/");
         }
     })
 });

@@ -31,7 +31,7 @@ public class WebController {
     public String finish (String countRome,String countWord,String correctRome, String correctWord) {
         FileWriter f0 = null;
         try {
-            f0 = new FileWriter("output.txt");
+            f0 = new FileWriter("output.txt",true);
             String newLine = System.getProperty("line.separator");
             f0.write("Rome all "+ countRome +" Rome correct "+ correctRome + newLine);
             f0.write("Word all "+ countWord +" Word correct "+ correctWord + newLine);
